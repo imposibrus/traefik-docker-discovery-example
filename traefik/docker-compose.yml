@@ -1,0 +1,25 @@
+version: '3.7'
+
+networks:
+  traefik:
+    external:
+      name: traefik
+
+services:
+  traefik:
+    image: 'traefik:v2.8.1'
+    container_name: traefik
+    restart: always
+    networks:
+      - traefik
+    ports:
+      - '80:80'
+      - '443:443'
+      - '8081:8081'
+    volumes:
+      - ./traefik.yml:/etc/traefik/traefik.yml
+      - ./conf.d:/etc/traefik/conf.d
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.enable=true"
+

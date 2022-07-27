@@ -1,0 +1,58 @@
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+
+entryPoints:
+  web:
+    address: :80
+    forwardedHeaders:
+      insecure: true
+# Uncomment next block to redirect all HTTP traffic to HTTPS:
+#    http:
+#      redirections:
+#        entryPoint:
+#          to: websecure
+#          scheme: https
+
+  websecure:
+    address: :443
+    forwardedHeaders:
+      insecure: true
+
+  traefik:
+    address: :8081
+
+
+certificatesResolvers:
+  default:
+    acme:
+      # Provide a real email here:
+      email: root@example.com
+      storage: /etc/traefik/conf.d/acme.json
+      httpChallenge:
+        # used during the challenge
+        entryPoint: web
+
+log:
+#  level: DEBUG
+#  filePath: log/traefik.log
+#  format: json
+
+accessLog:
+#  filePath: /path/to/log/log.txt
+  format: common
+
+api:
+  insecure: true
+  dashboard: true
+
+providers:
+  docker:
+#    endpoint: tcp://10.10.10.10:2375
+#    defaultRule: Host(`{{ normalize .Name }}.docker.localhost`)
+    exposedByDefault: false
+    network: traefik
+
+  file:
+    directory: /etc/traefik/conf.d
+
