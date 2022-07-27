@@ -43,5 +43,5 @@ cp hello-world-service/example.env hello-world-service/.env
 cd traefik
 docker-compose up -d
 cd ../hello-world-service
-docker-compose up -d
+docker-compose up -d --build
 ```
